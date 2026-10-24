@@ -1,34 +1,23 @@
-name: Build Android APK
+name: Package App Files
 
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
 
 jobs:
-  build:
+  package:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'temurin'
-        java-version: '17'
+    - name: Make Archive Zip
+      run: |
+        zip -r mawaqit-tv-project.zip .
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      continue-on-error: true
-
-    - name: Build Debug APK with Gradle
-      run: ./gradlew assembleDebug
-
-    - name: Upload APK Artifact
+    - name: Upload Project Archive
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        name: Mawaqit-TV-Source-Files
+        path: mawaqit-tv-project.zip
